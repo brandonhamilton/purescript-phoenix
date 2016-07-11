@@ -1,0 +1,26 @@
+{
+  "name": "purescript-phoenix",
+  "authors": [
+    "Brandon Hamilton <brandon.hamilton@gmail.com>"
+  ],
+  "description": "Phoenix Framework frontend integration for PureScript",
+  "keywords": [
+    "purescript",
+    "phoenix",
+    "elixir"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brandonhamilton/purescript-pheonix.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "devDependencies": {
+    "purescript-psci-support": "^1.0.0"
+  }
+}
