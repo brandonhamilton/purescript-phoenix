@@ -20,6 +20,9 @@
     "bower_components",
     "output"
   ],
+  "dependencies": {
+    "purescript-options": "^1.0.0"
+  },
   "devDependencies": {
     "purescript-psci-support": "^1.0.0"
   }

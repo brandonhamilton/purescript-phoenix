@@ -1,5 +1,6 @@
 {
   "name": "purescript-phoenix",
+  "private": true,
   "files": [],
   "peerDependencies": {
     "phoenix": "^1.2.0"
