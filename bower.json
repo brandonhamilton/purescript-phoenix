@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/brandonhamilton/purescript-pheonix.git"
+    "url": "git://github.com/brandonhamilton/purescript-phoenix.git"
   },
   "ignore": [
     "**/.*",
