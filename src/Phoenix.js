@@ -73,7 +73,7 @@ function registerCallback1(_this, func) {
   return function(callback) {
     return function() {
       return _this[func](function(arg) {
-        return callback(_this)(arg)(); 
+        return callback(_this)(arg)();
       });
     }
   }
@@ -91,7 +91,7 @@ exports.channel = function(socket) {
   return function(topic) {
     return function(params) {
       return function() {
-        return socket.channel(topic);
+          return socket.channel(topic, params);
       }
     }
   }
@@ -150,7 +150,7 @@ exports.on = function(channel) {
     return function(callback) {
       return function() {
         return channel.on(event, function(arg) {
-          callback(channel)(event)(arg)(); 
+          callback(channel)(event)(arg)();
         });
       }
     }
@@ -184,4 +184,3 @@ exports.receive = function(push) {
     }
   }
 }
-
