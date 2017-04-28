@@ -54,22 +54,22 @@ module Phoenix
   ) where
 
 import Prelude (Unit, (<$>))
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Monoid (mempty)
 import Data.Foreign (Foreign())
 import Data.Options (Options, Option, opt, options)
 
 -- | The `Phoenix` effect denotes computations which read/write from/to the Phoenix Channels.
-foreign import data PHOENIX :: !
+foreign import data PHOENIX :: Effect
 
 -- | A Phoenix Socket
-foreign import data Socket :: *
+foreign import data Socket :: Type
 
 -- | A Phoenix Channel
-foreign import data Channel :: *
+foreign import data Channel :: Type
 
 -- | A Phoenix Push object
-foreign import data Push :: *
+foreign import data Push :: Type
 
 data ConnectionState = SocketConnecting | SocketOpen | SocketClosing | SocketClosed
 
