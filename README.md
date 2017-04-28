@@ -4,8 +4,14 @@
 
 [Phoenix Framework](http://www.phoenixframework.org) Bindings for PureScript.
 
-- [Module Documentation](docs/)
+## Installation
 
 ```
 bower install purescript-phoenix
 ```
+
+## Documentation
+
+Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-phoenix/).
+
+
