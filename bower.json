@@ -21,9 +21,9 @@
     "output"
   ],
   "dependencies": {
-    "purescript-options": "^3.0.0"
+    "purescript-options": "^4.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0"
+    "purescript-psci-support": "^4.0.0"
   }
 }

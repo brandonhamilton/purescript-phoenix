@@ -1,7 +1,5 @@
 module Phoenix
-  (
-    PHOENIX()
-  , Socket()
+  ( Socket()
   , Channel()
   , Push()
   , ConnectionState(SocketConnecting,SocketOpen,SocketClosing,SocketClosed)
@@ -54,13 +52,10 @@ module Phoenix
   ) where
 
 import Prelude (Unit, (<$>))
-import Control.Monad.Eff (Eff, kind Effect)
+import Effect (Effect())
 import Data.Monoid (mempty)
-import Data.Foreign (Foreign())
+import Foreign (Foreign())
 import Data.Options (Options, Option, opt, options)
-
--- | The `Phoenix` effect denotes computations which read/write from/to the Phoenix Channels.
-foreign import data PHOENIX :: Effect
 
 -- | A Phoenix Socket
 foreign import data Socket :: Type
@@ -106,27 +101,27 @@ params :: Option Socket Foreign
 params = opt "params"
 
 -- | Create a new Phoenix Socket
-newSocket :: forall eff. Endpoint -> Options Socket -> Eff (phoenix :: PHOENIX | eff) Socket
+newSocket :: Endpoint -> Options Socket -> Effect Socket
 newSocket e o = newSocketImpl e (options o)
 
-foreign import newSocketImpl :: forall eff. Endpoint -> Foreign -> Eff (phoenix :: PHOENIX | eff) Socket
+foreign import newSocketImpl :: Endpoint -> Foreign -> Effect Socket
 
 -- | Socket operations
-foreign import connect :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import disconnect :: forall eff a. Socket -> (Socket -> Eff (phoenix :: PHOENIX | eff) a) -> Int -> String -> Eff (phoenix :: PHOENIX | eff) Unit
+foreign import connect :: Socket -> Effect Unit
+foreign import disconnect :: forall a. Socket -> (Socket -> Effect a) -> Int -> String -> Effect Unit
 
-foreign import channel :: forall eff. Socket -> Topic -> Foreign -> Eff (phoenix :: PHOENIX | eff) Channel
-foreign import remove :: forall eff. Socket -> Channel -> Eff (phoenix :: PHOENIX | eff) Unit
+foreign import channel :: Socket -> Topic -> Foreign -> Effect Channel
+foreign import remove :: Socket -> Channel -> Effect Unit
 
-foreign import sendHeartbeat :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import flushSendBuffer :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import makeRef :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) String
+foreign import sendHeartbeat :: Socket -> Effect Unit
+foreign import flushSendBuffer :: Socket -> Effect Unit
+foreign import makeRef :: Socket -> Effect String
 
-foreign import protocol :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) String
-foreign import endPointURL :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) String
-foreign import isConnected :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) Boolean
+foreign import protocol :: Socket -> Effect String
+foreign import endPointURL :: Socket -> Effect String
+foreign import isConnected :: Socket -> Effect Boolean
 
-connectionState :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) ConnectionState
+connectionState :: Socket -> Effect ConnectionState
 connectionState s = cs <$> connectionStateImpl s
   where
     cs :: String -> ConnectionState
@@ -135,30 +130,30 @@ connectionState s = cs <$> connectionStateImpl s
     cs "closing"    = SocketClosing
     cs _            = SocketClosed
 
-foreign import connectionStateImpl :: forall eff. Socket -> Eff (phoenix :: PHOENIX | eff) String
+foreign import connectionStateImpl :: Socket -> Effect String
 
 -- | Register callbacks
-foreign import onOpen        :: forall eff a. Socket -> (Socket -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import onMessage     :: forall eff a. Socket -> (Socket -> Message -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import onSocketClose :: forall eff a. Socket -> (Socket -> String -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import onSocketError :: forall eff a. Socket -> (Socket -> String -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
+foreign import onOpen        :: forall a. Socket -> (Socket -> Effect a) -> Effect Unit
+foreign import onMessage     :: forall a. Socket -> (Socket -> Message -> Effect a) -> Effect Unit
+foreign import onSocketClose :: forall a. Socket -> (Socket -> String -> Effect a) -> Effect Unit
+foreign import onSocketError :: forall a. Socket -> (Socket -> String -> Effect a) -> Effect Unit
 
 -- | Channel operations
-foreign import join :: forall eff. Channel -> Eff (phoenix :: PHOENIX | eff) Push
-foreign import push :: forall eff. Channel -> Event -> Foreign -> Eff (phoenix :: PHOENIX | eff) Push
-foreign import leave :: forall eff. Channel -> Eff (phoenix :: PHOENIX | eff) Push
+foreign import join :: Channel -> Effect Push
+foreign import push :: Channel -> Event -> Foreign -> Effect Push
+foreign import leave :: Channel -> Effect Push
 
-foreign import rejoinUntilConnected  :: forall eff. Channel -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import canPush :: forall eff. Channel -> Eff (phoenix :: PHOENIX | eff) Boolean
+foreign import rejoinUntilConnected  :: Channel -> Effect Unit
+foreign import canPush :: Channel -> Effect Boolean
 
 -- | Register callbacks
-foreign import onChannelClose :: forall eff a. Channel -> (Channel -> Event -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import onChannelError :: forall eff a. Channel -> (Channel -> String -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
+foreign import onChannelClose :: forall a. Channel -> (Channel -> Event -> Effect a) -> Effect Unit
+foreign import onChannelError :: forall a. Channel -> (Channel -> String -> Effect a) -> Effect Unit
 
 -- | Listen for messages on a channel
-foreign import on  :: forall eff a. Channel -> Event -> (Channel -> Event -> Foreign -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import off :: forall eff. Channel -> Event -> Eff (phoenix :: PHOENIX | eff) Unit
+foreign import on  :: forall a. Channel -> Event -> (Channel -> Event -> Foreign -> Effect a) -> Effect Unit
+foreign import off :: Channel -> Event -> Effect Unit
 
 -- | Push operations
-foreign import send    :: forall eff. Push -> Eff (phoenix :: PHOENIX | eff) Unit
-foreign import receive :: forall eff a. Push -> Status -> (Push -> Foreign -> Eff (phoenix :: PHOENIX | eff) a) -> Eff (phoenix :: PHOENIX | eff) Push
+foreign import send    :: Push -> Effect Unit
+foreign import receive :: forall a. Push -> Status -> (Push -> Foreign -> Effect a) -> Effect Push
